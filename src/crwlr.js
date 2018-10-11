@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native'
 import config from './config'
 
 class Crwlr extends Component {
@@ -7,17 +7,25 @@ class Crwlr extends Component {
 constructor(){
   super()
   this.state = {
-    screenWidth: Dimensions.get("window").width
+    screenWidth: Dimensions.get("window").width,
+    liked: false
   }
 }
 
+  likeToggled(){
+    this.setState({
+      liked: !this.state.liked
+    })
+  }
+
   render(){
 
-    const imageHeight = Math.floor(this.state.screenWidth * 1.07 )
+    const imageHeight = Math.floor(this.state.screenWidth * 1.1 )
     const imageUri = "https://lh3.googleusercontent.com/FTtUoqTTbxI_6RMKFljCYIfczk_4TdfDHNHjbqYV-5i2wppT9GtTn5hPO74TmRNgDE4p6978cSYGjigNBYsWQmc2ng" +
     '=s' +
     imageHeight +
     "-c"
+    const likedColor = (this.state.liked) ?  'rgb(252,61,57)': null
 
     return(
       <View style={{ flex: 1, width:100 + '%', height:100+ '%'}}>
@@ -36,12 +44,19 @@ constructor(){
             <Text style={{fontSize: 42}}>...</Text>
           </View>
         </View>
-        <Image
-        style={{width:this.state.screenWidth, height:imageHeight}}
-        source={{uri: imageUri}} />
+        <TouchableOpacity
+          activeOpacity = {.7}
+          onPress={() => {
+            this.likeToggled()
+          }}
+        >
+          <Image
+          style={{width:this.state.screenWidth, height:imageHeight}}
+          source={{uri: imageUri}} />
+        </TouchableOpacity>
         <View style={styles.interactionBar}>
           <View style={{flexDirection: 'row', justifyContent:'space-around', alignItems:'center', width: 50 + '%',}}>
-            <Image style={styles.icon} source={config.images.likeIcon}/>
+            <Image style={[styles.icon, {tintColor: likedColor}]} source={config.images.likeIcon}/>
             <Image style={styles.icon} source={config.images.msgIcon}/>
             <Image style={styles.icon} source={config.images.payIcon}/>
           </View>
@@ -94,11 +109,13 @@ const styles = StyleSheet.create({
     padding: 20,
     height: 50,
     width: 50,
+
   },
   payingBar: {
     width: 50 + '%',
     flexDirection: 'row',
-    alignItems:'center'
+    alignItems:'center',
+    justifyContent:'center'
   }
 })
 
