@@ -3,9 +3,32 @@ import {FlatList} from 'react-native'
 import {Post} from '../presentation'
 
 class PostFeed extends Component {
+  constructor(props){
+    super(props);
+    this.state ={ isLoading: true}
+  }
 
-  _renderPost(){
-    return <Post/>
+  componentDidMount(){
+    return fetch('http://172.31.98.60:3000/users/' + this.props.loca)
+      .then(response => response.json())
+      .then(responseJson => {
+
+        this.setState({
+          isLoading: false,
+          dataSource: responseJson.users,
+        }, function(){
+
+        });
+
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
+
+  _renderPost({item}){
+    return <Post item={item}/>
   }
 
   _returnKey(item){
@@ -14,9 +37,9 @@ class PostFeed extends Component {
 
   render(){
     return <FlatList
-      data={[1,2,3,4,5,6,7,8,9,10]}
+      data={this.state.dataSource}
       keyExtractor={this._returnKey}
-      renderItem={()=>this._renderPost()}
+      renderItem={this._renderPost}
     />
   }
 }

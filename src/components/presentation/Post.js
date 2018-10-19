@@ -19,12 +19,9 @@ constructor(){
   }
 
   render(){
-
     const imageHeight = Math.floor(this.state.screenWidth * 1.1 )
-    const imageUri = "https://lh3.googleusercontent.com/FTtUoqTTbxI_6RMKFljCYIfczk_4TdfDHNHjbqYV-5i2wppT9GtTn5hPO74TmRNgDE4p6978cSYGjigNBYsWQmc2ng" +
-    '=s' +
-    imageHeight +
-    "-c"
+    const imageUri = this.props.item.file
+
     const likedColor = (this.state.liked) ?  'rgb(252,61,57)': null
 
     return(
@@ -41,7 +38,7 @@ constructor(){
         </TouchableOpacity>
         <View style={styles.textBar}>
         <View style={{flexDirection: 'row', justifyContent:'space-around', alignItems:'center', width: 50 + '%',}}>
-        <Text style={{fontSize: 36}}>Denver,CO</Text>
+        <Text style={{fontSize: 36}}>{this.props.item.location}</Text>
         </View>
         <View style={styles.payingBar}>
         <Text style={{fontSize: 36}}>10/15/18</Text>
@@ -54,7 +51,7 @@ constructor(){
             <Image style={styles.icon} source={config.images.payIcon}/>
           </View>
           <View style={styles.payingBar}>
-            <Text style={{fontSize: 36}}>$4.00</Text>
+            <Text style={{fontSize: 36}}>${this.props.item.cost}</Text>
           </View>
         </View>
       </View>
